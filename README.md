@@ -108,26 +108,46 @@ Le `COMPTE` est le même des deux côtés du `@`.
 > propose un terminal dans le navigateur à l'adresse `https://ssh-COMPTE.alwaysdata.net`.
 > Leur propre documentation le décrit comme lent et peu fiable, mais il dépanne.
 
-Une fois connecté :
+Une fois connecté, le dépôt est **privé**, donc il faut s'authentifier. Le plus
+simple est de mettre le jeton directement dans l'adresse : git ne demande alors
+plus rien.
 
 ```bash
 cd ~
-git clone https://github.com/pauvertcorfmatugo-eng/portfolio.git
+git clone https://JETON@github.com/pauvertcorfmatugo-eng/portfolio.git
 cd portfolio
 ```
 
-> Le dépôt est **privé** : git demande deux choses.
-> - `Username for 'https://github.com'` → **`pauvertcorfmatugo-eng`** (ton identifiant
->   GitHub, pas ton email)
-> - `Password for ...` → **ton jeton d'accès personnel**, pas ton mot de passe GitHub.
->   Rien ne s'affiche pendant que tu le colles, c'est normal.
+Remplace `JETON` par le jeton d'accès personnel créé sur GitHub (il commence par
+`ghp_` ou `github_pat_`). Il doit donner le droit de **lecture sur ce dépôt** : un
+jeton *fine-grained* limité à `portfolio` avec « Contents : Read-only » suffit, un
+jeton *classic* avec la case `repo` aussi.
+
+> **Si tu préfères la méthode interactive** (`git clone https://github.com/...`),
+> git pose deux questions :
+> - `Username for 'https://github.com'` → **`pauvertcorfmatugo-eng`**, ton identifiant
+>   GitHub. Ni ton email, ni ton nom d'utilisateur AlwaysData.
+> - `Password for ...` → **le jeton**, pas ton mot de passe GitHub. Rien ne s'affiche
+>   pendant que tu le colles, c'est normal : tape puis valide.
 >
-> Le jeton doit avoir le droit de **lecture sur ce dépôt** : un jeton *fine-grained*
-> limité à `portfolio` avec « Contents : Read-only » suffit, un jeton *classic* avec
-> la case `repo` aussi.
+> À savoir : d'après la documentation GitHub, l'identifiant demandé n'est pas utilisé
+> pour t'authentifier — **seul le jeton compte**. Git exige qu'un identifiant soit saisi,
+> mais si tu te trompes dessus et que le jeton est bon, la connexion passe quand même.
+> Autrement dit, le seul vrai risque d'échec ici, c'est le jeton ou ses droits.
+
+> **Le jeton reste enregistré** dans `~/portfolio/.git/config` sur le serveur, en clair.
+> Sur ton propre hébergement avec un jeton en lecture seule limité à ce dépôt, c'est
+> acceptable — et c'est ce qui permet aux `git pull` suivants de ne rien redemander.
+> Pour l'effacer une fois le site en ligne :
 >
-> Alternative sans jeton : passer le dépôt en public dans les réglages GitHub, et le
-> `git clone` ne demandera plus rien.
+> ```bash
+> git -C ~/portfolio remote set-url origin https://github.com/pauvertcorfmatugo-eng/portfolio.git
+> ```
+>
+> Les mises à jour redemanderont alors identifiant et jeton à chaque fois.
+
+> Alternative sans jeton du tout : passer le dépôt en public dans les réglages GitHub,
+> et le `git clone` ne demandera plus rien.
 
 ### Étape 4 — Compiler le site
 

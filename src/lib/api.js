@@ -57,29 +57,3 @@ export async function request(file, { params, method = 'GET', body } = {}) {
   }
   return data;
 }
-
-/** Envoie un morceau de fichier (XHR pour suivre la progression). */
-export function uploadChunk({ params, blob, onProgress, signal }) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', apiUrl('files.php', { action: 'upload', ...params }));
-    xhr.responseType = 'json';
-    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-    if (csrfToken) xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-
-    xhr.upload.onprogress = (e) => onProgress?.(e.loaded);
-    xhr.onload = () => {
-      const data = xhr.response;
-      if (xhr.status >= 200 && xhr.status < 300 && data) resolve(data);
-      else reject(new ApiError(data?.error || `Erreur ${xhr.status}`, xhr.status, data));
-    };
-    xhr.onerror = () => reject(new ApiError('Connexion interrompue.', 0, null, true));
-    xhr.onabort = () => reject(new ApiError('Envoi annulé.', -1));
-
-    if (signal) {
-      if (signal.aborted) return reject(new ApiError('Envoi annulé.', -1));
-      signal.addEventListener('abort', () => xhr.abort(), { once: true });
-    }
-    xhr.send(blob);
-  });
-}

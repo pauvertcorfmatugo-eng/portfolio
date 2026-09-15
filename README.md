@@ -1,11 +1,10 @@
 # Portfolio — Ugo Pauvert--Corfmat
 
-Portfolio en **React** (Vite) avec une petite **API PHP** pour l'espace privé.
+Portfolio en **React** (Vite) avec une petite **API PHP** pour le formulaire de contact
+et l'espace privé.
 
 - **Site public** : profil, compétences, projets (avec étude de cas détaillée), parcours, contact.
-- **Assistant (chat)** : répond automatiquement aux questions des visiteurs à partir du contenu du site.
-  S'il ne sait pas répondre, il propose de t'envoyer un message.
-- **Espace privé** (`/espace`) : ton cloud personnel (fichiers) + les messages reçus. Protégé par mot de passe.
+- **Espace privé** (`/espace`) : les messages reçus via le formulaire de contact. Protégé par mot de passe.
 
 L'ancienne version PHP est conservée dans [`ancien/`](ancien/).
 
@@ -14,8 +13,6 @@ L'ancienne version PHP est conservée dans [`ancien/`](ancien/).
 ## 1. Lancer le site en local
 
 Prérequis : WAMP démarré (icône verte) et Node.js installé.
-
-> Node.js vient d'être installé : ouvre un **nouveau** terminal pour que la commande `npm` soit reconnue.
 
 ```bash
 cd F:\wamp64\www\Portfolio
@@ -50,73 +47,102 @@ Ensuite : lien « Espace privé » en bas de page, ou directement `http://localh
 | Photos des projets | `public/projets/` (puis chemin dans `projets.js`) |
 | **Ton CV** | `public/cv/CV_Ugo_Pauvert_Corfmat.pdf` |
 | Couleur d'accent, typo | `src/styles/tokens.css` (`--accent`) |
-| Réponses de l'assistant | `src/components/chat/brain.js` |
 
-L'assistant lit directement `profil.js` et `projets.js` : si tu modifies ton contenu, ses réponses suivent.
+## 4. Mettre le site en ligne sur AlwaysData
 
-## 4. Version compilée
+### a. Préparer le dossier à envoyer
 
 ```bash
-npm run build:wamp   # version servie par WAMP : http://localhost/Portfolio/
-npm run build        # version pour un serveur (VPS) : dossier dist/
+npm run build:deploy
 ```
 
-## 5. Structure
+Un dossier **`deploy/`** apparaît : c'est *exactement* ce qu'il faut mettre en ligne
+(le site compilé + `api/` + `data/`).
+
+### b. Créer le site chez AlwaysData
+
+Dans l'administration AlwaysData :
+
+1. **Web → Sites → Ajouter un site**
+   - Type : **PHP** (version **8.1 ou plus**)
+   - Racine : `/www` (ou le dossier que tu préfères, par ex. `/www/portfolio`)
+   - Adresse : ton sous-domaine `xxx.alwaysdata.net`, ou ton nom de domaine.
+2. **Envoie le contenu de `deploy/`** dans ce dossier (FTP, SFTP ou SSH).
+   Attention : le *contenu* du dossier, pas le dossier `deploy` lui-même.
+   L'arborescence sur le serveur doit ressembler à :
+
+   ```
+   www/
+   ├── index.html      ← le site
+   ├── assets/
+   ├── .htaccess       ← routage des pages (/projets/…, /espace)
+   ├── api/            ← l'API PHP
+   └── data/           ← base SQLite + sessions (créées toutes seules)
+   ```
+
+3. **Crée ton mot de passe**, en SSH (`ssh xxx@ssh-xxx.alwaysdata.net`) :
+
+   ```bash
+   cd ~/www
+   php api/tools/setup.php
+   ```
+
+4. **Active le HTTPS** (gratuit, dans *Web → Sites → SSL*). C'est indispensable :
+   sans lui, ton mot de passe circulerait en clair.
+
+### c. Vérifier
+
+- `https://ton-site/` → le portfolio.
+- `https://ton-site/projets/ministages44` → l'étude de cas (si cette page s'affiche,
+  le `.htaccess` fonctionne).
+- `https://ton-site/espace` → la connexion à l'espace privé.
+- Envoie-toi un message depuis le formulaire de contact : il doit apparaître dans l'espace privé.
+
+### d. Pour mettre à jour le site plus tard
+
+Relance `npm run build:deploy` et renvoie le contenu de `deploy/`.
+Ne touche pas à `data/` (tes messages sont dedans) ni à `api/config.local.php` (ton mot de passe).
+
+> **Si le CV ne se télécharge pas** : place ton PDF dans `public/cv/CV_Ugo_Pauvert_Corfmat.pdf`
+> avant de compiler (voir `public/cv/LISEZ-MOI.txt`).
+
+> **Option plus sûre pour les données** : mets la base hors du dossier web. Ajoute dans
+> `api/config.local.php` : `'data_dir' => '/home/TON-COMPTE/prive/portfolio-data',`
+
+## 5. Autres façons de compiler
+
+```bash
+npm run build        # version simple pour un serveur : dossier dist/
+npm run build:wamp   # version servie par WAMP : http://localhost/Portfolio/
+```
+
+## 6. Structure
 
 ```
 Portfolio/
 ├── src/                  Site React
 │   ├── data/             ← TOUT le contenu du site
-│   ├── components/       Navigation, chat, blocs de code…
+│   ├── components/       Navigation, formulaire de contact, blocs de code…
 │   ├── pages/            Accueil, page projet, espace privé
 │   └── styles/           Couleurs et styles de base
 ├── public/               Fichiers servis tels quels (CV, images, favicon)
 ├── api/                  API PHP
 │   ├── auth.php          Connexion / déconnexion
-│   ├── files.php         Cloud : lister, envoyer, télécharger, renommer, supprimer
-│   ├── messages.php      Messages du formulaire et du chat
+│   ├── messages.php      Messages du formulaire de contact
 │   ├── config.php        Réglages par défaut
-│   ├── _lib/             Code partagé (sessions, sécurité, stockage)
+│   ├── _lib/             Code partagé (sessions, sécurité, base)
 │   └── tools/setup.php   Création du mot de passe
 ├── data/                 Base SQLite + sessions (privé, créé automatiquement)
-├── storage/              Fichiers du cloud par défaut (privé)
+├── scripts/              Préparation du dossier à mettre en ligne
 └── ancien/               Ancienne version du portfolio
 ```
 
-## 6. Sécurité en place
+## 7. Sécurité en place
 
 - Mot de passe haché (bcrypt), jamais stocké en clair.
 - 5 tentatives de connexion ratées par quart d'heure et par IP, puis blocage.
 - Session protégée (cookie `HttpOnly` + `SameSite=Strict`), déconnexion après 2 h d'inactivité.
-- Jeton CSRF obligatoire pour toute modification (envoi, suppression…).
-- Impossible de sortir du dossier de stockage (`../` refusé, liens symboliques vérifiés).
-- `data/`, `storage/`, `api/_lib`, `api/tools` et les fichiers de config sont interdits d'accès via Apache.
-- Les aperçus de fichiers ne peuvent pas exécuter de script (texte servi en `text/plain`, CSP `sandbox`).
+- Jeton CSRF obligatoire pour toute modification (lecture, suppression d'un message…).
+- `data/`, `api/_lib`, `api/tools` et les fichiers de config sont interdits d'accès via Apache.
 - Formulaire de contact : piège à robots + 5 messages par heure et par visiteur. Les IP ne sont jamais
   stockées en clair.
-
-## 7. Plus tard : accéder à ton cloud depuis l'extérieur
-
-Deux approches, selon ce que tu veux :
-
-**Option A — un VPS** (serveur loué, ~4 à 6 €/mois : OVH, Hetzner, Scaleway…)
-- Le portfolio est en ligne 24 h/24 avec une vraie adresse (nom de domaine ~10 €/an).
-- Installe Debian + Nginx (ou Apache) + PHP 8.3, puis copie `dist/` + `api/` dans le dossier web.
-- Mets `storage_dir` et `data_dir` **en dehors** du dossier web (ex. `/srv/portfolio/storage`).
-- **HTTPS obligatoire** (gratuit avec Let's Encrypt / `certbot`) : sans lui, ton mot de passe passerait en clair.
-- Pense à augmenter `post_max_size` dans `php.ini` (ex. `64M`) : les envois seront plus rapides.
-- Limite : l'espace disque d'un VPS est souvent petit (40 à 80 Go).
-
-**Option B — un NAS / PC chez toi** (beaucoup de stockage, pas d'abonnement)
-- Le cloud tourne chez toi : WAMP (ou Linux + Apache/PHP) sur une machine allumée en permanence.
-- `storage_dir` peut pointer vers le disque du NAS.
-- Pour y accéder depuis l'extérieur **sans ouvrir de port sur ta box**, le plus simple et le plus sûr :
-  - **Tailscale** (VPN gratuit) : seul toi y accèdes, depuis tes appareils. Idéal pour un cloud perso.
-  - **Cloudflare Tunnel** (gratuit, avec un nom de domaine) : accès public en HTTPS. Mets alors
-    `'trust_proxy' => true` dans `api/config.local.php`.
-- Évite d'ouvrir directement les ports 80/443 de ta box vers WAMP : WAMP n'est pas fait pour être exposé
-  sur Internet.
-
-**Combo courant** : portfolio public sur un VPS (ou hébergement gratuit type Netlify pour la partie React),
-et cloud chez toi accessible via Tailscale. Dans ce cas, le chat et le formulaire de contact passent par
-l'API du VPS.

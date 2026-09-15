@@ -10,7 +10,6 @@
 declare(strict_types=1);
 
 require __DIR__ . '/_lib/bootstrap.php';
-require __DIR__ . '/_lib/storage.php';
 
 function session_state(): array
 {
@@ -20,7 +19,6 @@ function session_state(): array
         'authenticated' => $user !== null,
         'user' => $user,
         'csrf' => $user !== null ? csrf_token() : null,
-        'upload' => $user !== null ? upload_limits() : null,
     ];
 }
 

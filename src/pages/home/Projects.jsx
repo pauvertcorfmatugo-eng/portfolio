@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, MessageCircle } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { projets } from '../../data/projets';
 import SectionHead from '../../components/SectionHead.jsx';
 import { GithubIcon } from '../../components/BrandIcons.jsx';
-import { useChat } from '../../components/chat/ChatContext.jsx';
 import './Projects.css';
 
 const num = (n) => String(n).padStart(2, '0');
@@ -68,7 +67,6 @@ function Featured({ p }) {
 }
 
 function ProjectCard({ p, n, delay }) {
-  const chat = useChat();
   return (
     <article className="proj reveal" style={{ '--delay': delay }}>
       <span className="mono proj-num">{num(n)}</span>
@@ -92,9 +90,6 @@ function ProjectCard({ p, n, delay }) {
             <GithubIcon /> Voir le code <ArrowUpRight />
           </a>
         )}
-        <button type="button" className="btn btn-ghost btn-sm" onClick={() => chat.open(`Parle-moi du projet ${p.titre}`)}>
-          <MessageCircle /> Une question ?
-        </button>
       </div>
     </article>
   );

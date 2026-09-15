@@ -1,7 +1,6 @@
-import { ArrowDown, Download, GraduationCap, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowDown, Download, GraduationCap, MapPin } from 'lucide-react';
 import { competences, liens, parcours, profil, recherche } from '../../data/profil';
 import { publicUrl } from '../../lib/paths';
-import { useChat } from '../../components/chat/ChatContext.jsx';
 import { GithubIcon, LinkedinIcon } from '../../components/BrandIcons.jsx';
 import './Hero.css';
 
@@ -66,7 +65,6 @@ function ProfileFile() {
 }
 
 export default function Hero() {
-  const chat = useChat();
   const [prenom, ...reste] = profil.nom.split(' ');
   const nom = reste.join(' ');
 
@@ -129,9 +127,6 @@ export default function Hero() {
               <a href={publicUrl(profil.cv)} className="btn btn-outline" download>
                 <Download /> Télécharger le CV
               </a>
-              <button type="button" className="btn btn-ghost" onClick={() => chat.open()}>
-                <MessageCircle /> Poser une question
-              </button>
             </div>
 
             <ul className="hero-meta reveal" style={{ '--delay': '0.25s' }}>

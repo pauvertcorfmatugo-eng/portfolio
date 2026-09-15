@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Nav from './Nav.jsx';
 import Footer from './Footer.jsx';
-import { ChatProvider } from './chat/ChatContext.jsx';
-import ChatWidget from './chat/ChatWidget.jsx';
 
 /** Remonte en haut à chaque changement de page, ou descend jusqu'à l'ancre (#projets…). */
 function ScrollManager() {
@@ -24,14 +22,13 @@ function ScrollManager() {
 
 export default function Layout() {
   return (
-    <ChatProvider>
+    <>
       <ScrollManager />
       <Nav />
       <main id="contenu">
         <Outlet />
       </main>
       <Footer />
-      <ChatWidget />
-    </ChatProvider>
+    </>
   );
 }

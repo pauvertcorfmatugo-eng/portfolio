@@ -5,12 +5,12 @@ import { profil } from '../data/profil';
 import './MessageForm.css';
 
 /**
- * Formulaire « Laisser un message ». Les messages arrivent dans l'espace privé (onglet Messages).
+ * Formulaire « Laisser un message ». Les messages arrivent dans l'espace privé.
  * Si l'API n'est pas joignable (ex. site hébergé sans PHP), on propose l'email à la place.
  */
-export default function MessageForm({ source = 'contact', prefill = '', compact = false }) {
+export default function MessageForm() {
   const id = useId();
-  const [form, setForm] = useState({ name: '', email: '', message: prefill, website: '' });
+  const [form, setForm] = useState({ name: '', email: '', message: '', website: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const [error, setError] = useState(null);
 
@@ -21,7 +21,7 @@ export default function MessageForm({ source = 'contact', prefill = '', compact 
     setStatus('sending');
     setError(null);
     try {
-      await request('messages.php', { params: { action: 'send' }, method: 'POST', body: { ...form, source } });
+      await request('messages.php', { params: { action: 'send' }, method: 'POST', body: form });
       setStatus('sent');
     } catch (err) {
       setError(err);
@@ -48,7 +48,7 @@ export default function MessageForm({ source = 'contact', prefill = '', compact 
   const mailto = `mailto:${profil.email}?subject=${encodeURIComponent('Contact depuis votre portfolio')}&body=${encodeURIComponent(form.message)}`;
 
   return (
-    <form className={`msg-form${compact ? ' is-compact' : ''}`} onSubmit={submit}>
+    <form className="msg-form" onSubmit={submit}>
       <div className="msg-row">
         <div className="field">
           <label htmlFor={`${id}-name`}>
@@ -89,8 +89,8 @@ export default function MessageForm({ source = 'contact', prefill = '', compact 
           required
           minLength={5}
           maxLength={3000}
-          rows={compact ? 3 : 5}
-          placeholder={compact ? '' : 'Une offre de stage, une question sur un projet…'}
+          rows={5}
+          placeholder="Une offre de stage, une question sur un projet…"
         />
       </div>
 

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:wamp": "vite build --mode wamp",
+    "build:deploy": "vite build && node scripts/build-deploy.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

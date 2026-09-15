@@ -1,12 +1,11 @@
 node_modules/
 dist/
+deploy/
 
 # Secrets et données privées : ne jamais les publier
 api/config.local.php
 data/*
 !data/.htaccess
-storage/*
-!storage/.htaccess
 
 .env.local
 .DS_Store

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 //  CONTENU DU PORTFOLIO
 //  Tout le texte du site vient de ce fichier (et de projets.js).
-//  Modifie ici, le site et l'assistant du chat se mettent à jour.
+//  Modifie ici : tout le site suit.
 // ─────────────────────────────────────────────────────────────
 
 export const profil = {

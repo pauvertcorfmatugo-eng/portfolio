@@ -1,8 +1,8 @@
 <?php
 /**
- * Messages laissés par les visiteurs (formulaire de contact et chat).
+ * Messages laissés par les visiteurs (formulaire de contact).
  *
- *   POST messages.php?action=send     (public)   {"name", "email", "message", "source"}
+ *   POST messages.php?action=send     (public)   {"name", "email", "message"}
  *   GET  messages.php?action=list     (privé)
  *   POST messages.php?action=read     (privé)    {"id": 3, "read": true}
  *   POST messages.php?action=delete   (privé)    {"id": 3}
@@ -31,11 +31,10 @@ switch ($_GET['action'] ?? '') {
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             fail("L'adresse email n'est pas valide.");
         }
-        $source = in_array($body['source'] ?? '', ['chat', 'contact'], true) ? $body['source'] : 'contact';
 
         rate_limit('message', 5, 3600); // 5 messages par heure et par visiteur
-        db()->prepare('INSERT INTO messages (name, email, message, source, ip_hash, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-            ->execute([$name, $email, $message, $source, client_fingerprint(), gmdate('c')]);
+        db()->prepare('INSERT INTO messages (name, email, message, ip_hash, created_at) VALUES (?, ?, ?, ?, ?)')
+            ->execute([$name, $email, $message, client_fingerprint(), gmdate('c')]);
         rate_hit('message');
 
         json_response(['ok' => true]);
@@ -43,7 +42,7 @@ switch ($_GET['action'] ?? '') {
     case 'list':
         require_method('GET');
         require_auth();
-        $items = db()->query('SELECT id, name, email, message, source, created_at, read_at
+        $items = db()->query('SELECT id, name, email, message, created_at, read_at
                               FROM messages ORDER BY id DESC LIMIT 500')->fetchAll();
         foreach ($items as &$item) {
             $item['id'] = (int) $item['id'];

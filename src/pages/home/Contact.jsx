@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { ArrowUpRight, Check, Copy, Download, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, Check, Copy, Download, MapPin } from 'lucide-react';
 import { liens, profil } from '../../data/profil';
 import { publicUrl } from '../../lib/paths';
 import SectionHead from '../../components/SectionHead.jsx';
 import MessageForm from '../../components/MessageForm.jsx';
 import { GithubIcon, LinkedinIcon } from '../../components/BrandIcons.jsx';
-import { useChat } from '../../components/chat/ChatContext.jsx';
 import './Contact.css';
 
 export default function Contact() {
-  const chat = useChat();
   const [copied, setCopied] = useState(false);
 
   async function copyEmail() {
@@ -64,11 +62,6 @@ export default function Contact() {
                   <Download /> CV (PDF) <ArrowUpRight className="contact-arrow" />
                 </a>
               </li>
-              <li>
-                <button type="button" onClick={() => chat.open()}>
-                  <MessageCircle /> Poser une question à l'assistant <ArrowUpRight className="contact-arrow" />
-                </button>
-              </li>
             </ul>
 
             <p className="contact-loc mono">
@@ -78,7 +71,7 @@ export default function Contact() {
 
           <div className="contact-card reveal" style={{ '--delay': '0.1s' }}>
             <h3>Écrire un message</h3>
-            <MessageForm source="contact" />
+            <MessageForm />
           </div>
         </div>
       </div>

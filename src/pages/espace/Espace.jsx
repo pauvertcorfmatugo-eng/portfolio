@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FolderOpen, Inbox, LogOut, Moon, ServerOff, Settings, Sun } from 'lucide-react';
+import { LogOut, Moon, ServerOff, Settings, Sun } from 'lucide-react';
 import { request, setCsrfToken } from '../../lib/api';
 import { useDocumentTitle, useTheme } from '../../lib/hooks';
 import Login from './Login.jsx';
-import Files from './Files.jsx';
 import Messages from './Messages.jsx';
 import './Espace.css';
 
@@ -35,8 +34,6 @@ export default function Espace() {
   const [theme, toggleTheme] = useTheme();
   const [session, setSession] = useState(null); // null = chargement
   const [error, setError] = useState(null);
-  const [tab, setTab] = useState('files');
-  const [unread, setUnread] = useState(0);
 
   const applySession = useCallback((s) => {
     setCsrfToken(s.csrf);
@@ -110,26 +107,7 @@ export default function Espace() {
   } else if (!authed) {
     content = <Login onLogin={applySession} />;
   } else {
-    content = (
-      <>
-        <div className="esp-tabs" role="tablist">
-          <button type="button" role="tab" aria-selected={tab === 'files'} onClick={() => setTab('files')}>
-            <FolderOpen /> Fichiers
-          </button>
-          <button type="button" role="tab" aria-selected={tab === 'messages'} onClick={() => setTab('messages')}>
-            <Inbox /> Messages
-            {unread > 0 && <span className="esp-badge">{unread}</span>}
-          </button>
-        </div>
-        {/* Les deux onglets restent montés : un envoi en cours continue si on change d'onglet. */}
-        <div role="tabpanel" hidden={tab !== 'files'}>
-          <Files uploadLimits={session.upload} onAuthError={onAuthError} />
-        </div>
-        <div role="tabpanel" hidden={tab !== 'messages'}>
-          <Messages active={tab === 'messages'} onUnread={setUnread} onAuthError={onAuthError} />
-        </div>
-      </>
-    );
+    content = <Messages onAuthError={onAuthError} />;
   }
 
   return (

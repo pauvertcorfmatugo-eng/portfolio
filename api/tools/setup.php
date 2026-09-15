@@ -4,7 +4,7 @@
  *
  *     F:\wamp64\bin\php\php8.3.28\php.exe api\tools\setup.php
  *
- * Crée ou met à jour api/config.local.php : identifiant, mot de passe (haché), dossier de stockage.
+ * Crée ou met à jour api/config.local.php : identifiant et mot de passe (haché).
  * Relance-le quand tu veux changer de mot de passe.
  */
 
@@ -70,31 +70,23 @@ while (true) {
     break;
 }
 
-$defaultStorage = $current['storage_dir'] ?? str_replace('\\', '/', $projectDir) . '/storage';
-echo PHP_EOL . "Dossier où seront rangés les fichiers du cloud." . PHP_EOL;
-echo "Conseil : un dossier HORS du site web (ex. D:/cloud), ou le dossier d'un NAS." . PHP_EOL;
-$storage = str_replace('\\', '/', ask('Dossier de stockage', $defaultStorage));
-
 $config = [
     'username' => $username,
     'password_hash' => password_hash($password, PASSWORD_DEFAULT),
     'secret' => $current['secret'] ?? bin2hex(random_bytes(32)),
-    'storage_dir' => $storage,
 ] + $current;
 
 $php = "<?php\n// Généré par api/tools/setup.php — NE PAS PUBLIER ce fichier (il est dans .gitignore).\n\nreturn "
     . var_export($config, true) . ";\n";
 file_put_contents($configFile, $php);
 
-foreach ([$storage, $config['data_dir'] ?? $projectDir . '/data'] as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0770, true);
-    }
-    if (!is_file($dir . '/.htaccess')) {
-        file_put_contents($dir . '/.htaccess', "Require all denied\n");
-    }
+$dataDir = $config['data_dir'] ?? $projectDir . '/data';
+if (!is_dir($dataDir)) {
+    mkdir($dataDir, 0770, true);
+}
+if (!is_file($dataDir . '/.htaccess')) {
+    file_put_contents($dataDir . '/.htaccess', "Require all denied\n");
 }
 
 echo PHP_EOL . "✔ Configuration enregistrée dans api/config.local.php" . PHP_EOL;
-echo "✔ Stockage : $storage" . PHP_EOL;
 echo PHP_EOL . "Connecte-toi sur la page /espace du site avec l'identifiant « $username »." . PHP_EOL . PHP_EOL;

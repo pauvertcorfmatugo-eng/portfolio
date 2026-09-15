@@ -4,8 +4,8 @@ import { request } from '../../lib/api';
 import { formatDate } from '../../lib/format';
 import Modal from '../../components/Modal.jsx';
 
-/** Messages laissés par les visiteurs (formulaire de contact et chat). */
-export default function Messages({ active, onUnread, onAuthError }) {
+/** Messages laissés par les visiteurs depuis le formulaire de contact. */
+export default function Messages({ onAuthError }) {
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -25,28 +25,21 @@ export default function Messages({ active, onUnread, onAuthError }) {
     try {
       const res = await request('messages.php', { params: { action: 'list' } });
       setItems(res.items);
-      onUnread(res.unread);
     } catch (err) {
       handleError(err);
     } finally {
       setLoading(false);
     }
-  }, [onUnread, handleError]);
+  }, [handleError]);
 
-  // Chargé dès la connexion (pour le compteur), puis à chaque changement d'onglet.
   useEffect(() => {
     load();
-  }, [active, load]);
-
-  const update = (list) => {
-    setItems(list);
-    onUnread(list.filter((m) => !m.read_at).length);
-  };
+  }, [load]);
 
   async function setRead(message, read) {
     try {
       await request('messages.php', { params: { action: 'read' }, method: 'POST', body: { id: message.id, read } });
-      update(items.map((m) => (m.id === message.id ? { ...m, read_at: read ? new Date().toISOString() : null } : m)));
+      setItems(items.map((m) => (m.id === message.id ? { ...m, read_at: read ? new Date().toISOString() : null } : m)));
     } catch (err) {
       handleError(err);
     }
@@ -57,7 +50,7 @@ export default function Messages({ active, onUnread, onAuthError }) {
     setToDelete(null);
     try {
       await request('messages.php', { params: { action: 'delete' }, method: 'POST', body: { id: message.id } });
-      update(items.filter((m) => m.id !== message.id));
+      setItems(items.filter((m) => m.id !== message.id));
     } catch (err) {
       handleError(err);
     }
@@ -74,7 +67,7 @@ export default function Messages({ active, onUnread, onAuthError }) {
   return (
     <div className="inbox">
       <div className="inbox-head">
-        <p className="muted">Messages envoyés depuis le formulaire de contact et le chat du portfolio.</p>
+        <p className="muted">Messages envoyés depuis le formulaire de contact du portfolio.</p>
         <button type="button" className="icon-btn" onClick={load} aria-label="Actualiser" title="Actualiser">
           <RefreshCw className={loading ? 'spin' : undefined} />
         </button>
@@ -83,8 +76,8 @@ export default function Messages({ active, onUnread, onAuthError }) {
       {error && <p className="form-error">{error}</p>}
 
       {items && items.length === 0 && (
-        <div className="files-state">
-          <Inbox className="files-empty-icon" />
+        <div className="inbox-empty">
+          <Inbox />
           <p>Aucun message pour le moment.</p>
         </div>
       )}
@@ -102,7 +95,6 @@ export default function Messages({ active, onUnread, onAuthError }) {
                 )}
               </div>
               <div className="msg-meta">
-                <span className="msg-source">{m.source === 'chat' ? 'Chat' : 'Contact'}</span>
                 <time dateTime={m.created_at}>{formatDate(m.created_at)}</time>
               </div>
             </header>

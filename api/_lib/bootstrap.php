@@ -161,7 +161,6 @@ function db(): PDO
             name       TEXT    NOT NULL DEFAULT '',
             email      TEXT    NOT NULL DEFAULT '',
             message    TEXT    NOT NULL,
-            source     TEXT    NOT NULL DEFAULT 'contact',
             ip_hash    TEXT    NOT NULL,
             created_at TEXT    NOT NULL,
             read_at    TEXT

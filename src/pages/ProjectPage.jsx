@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Code2, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Code2, Mail } from 'lucide-react';
 import { getProjet, projets } from '../data/projets';
 import { profil } from '../data/profil';
 import { useDocumentTitle, useReveal } from '../lib/hooks';
@@ -8,7 +8,6 @@ import { publicUrl } from '../lib/paths';
 import CodeBlock from '../components/CodeBlock.jsx';
 import Lightbox from '../components/Lightbox.jsx';
 import { GithubIcon } from '../components/BrandIcons.jsx';
-import { useChat } from '../components/chat/ChatContext.jsx';
 import NotFound from './NotFound.jsx';
 import './ProjectPage.css';
 
@@ -59,7 +58,6 @@ function useActiveSection(ids) {
 
 function CaseStudy({ p }) {
   const ref = useReveal();
-  const chat = useChat();
   const [photo, setPhoto] = useState(null);
   const details = p.details;
   const sections = details?.sections ?? EMPTY;
@@ -183,9 +181,9 @@ function CaseStudy({ p }) {
       ) : (
         <div className="container case-empty">
           <p>La présentation détaillée de ce projet n'est pas encore rédigée.</p>
-          <button type="button" className="btn btn-outline" onClick={() => chat.open(`Parle-moi du projet ${p.titre}`)}>
-            <MessageCircle /> Poser une question sur ce projet
-          </button>
+          <Link to="/#contact" className="btn btn-outline">
+            <Mail /> Poser une question sur ce projet
+          </Link>
         </div>
       )}
 

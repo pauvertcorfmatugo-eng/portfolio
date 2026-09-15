@@ -1,0 +1,77 @@
+.msg-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.msg-form .btn {
+  justify-self: start;
+}
+
+.msg-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.msg-form.is-compact {
+  gap: 0.75rem;
+}
+
+.msg-form.is-compact .msg-row {
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.msg-form.is-compact .input {
+  min-height: 40px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.msg-form.is-compact textarea.input {
+  min-height: 80px;
+}
+
+.msg-form.is-compact .btn {
+  justify-self: stretch;
+}
+
+.msg-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.msg-sent {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.msg-sent svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--accent-text);
+}
+
+.msg-sent p {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  color: var(--text-2);
+}
+
+@media (max-width: 560px) {
+  .msg-row {
+    grid-template-columns: 1fr;
+  }
+
+  .msg-form .btn {
+    justify-self: stretch;
+  }
+}

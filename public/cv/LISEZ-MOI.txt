@@ -1,0 +1,6 @@
+Place ton CV dans ce dossier avec ce nom exact :
+
+    CV_Ugo_Pauvert_Corfmat.pdf
+
+(le nom est défini dans src/data/profil.js → profil.cv)
+Le bouton « Télécharger le CV » du site pointe vers ce fichier.

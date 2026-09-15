@@ -1,0 +1,6 @@
+Options -Indexes
+
+# Fichiers de configuration : jamais accessibles depuis le navigateur
+<FilesMatch "^config(\.local)?\.php$">
+    Require all denied
+</FilesMatch>

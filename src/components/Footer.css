@@ -1,0 +1,51 @@
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 1.6rem 0 6.5rem;
+  color: var(--text-3);
+  font-size: 0.9rem;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+
+.footer-stack {
+  font-size: 0.8rem;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.footer-links .icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.footer-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.footer-private:hover {
+  color: var(--text);
+  background: var(--bg-sunken);
+}
+
+.footer-private svg {
+  width: 14px;
+  height: 14px;
+}

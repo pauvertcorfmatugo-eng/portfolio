@@ -1,0 +1,125 @@
+/* ===== Bouton "Voir la présentation" ===== */
+.btn-projet-detail {
+    background: none;
+    border: none;
+    font-family: var(--font-main);
+    cursor: pointer;
+    padding: 0;
+}
+
+/* ===== Fenêtre de présentation (au premier plan) ===== */
+.project-modal-content {
+    max-width: 1100px;
+    width: 95%;
+    max-height: 92vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 3rem;
+}
+
+.project-modal-content h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+}
+
+/* Galerie de photos */
+.pm-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.pm-photo {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: zoom-in;
+    transition: 0.3s ease;
+    border: 1px solid var(--glass-border);
+}
+.pm-photo:hover { transform: scale(1.03); border-color: var(--accent); }
+
+/* Sections de texte */
+.pm-section { margin-bottom: 1.5rem; }
+.pm-section h4 {
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--secondary);
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.pm-section p { color: var(--text); line-height: 1.6; white-space: pre-line; }
+
+body.dark-mode .pm-section h4 {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+}
+
+/* Blocs de code */
+.pm-code-block { margin-bottom: 1.5rem; }
+.pm-code-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+.pm-code {
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 0;
+}
+.pm-code code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    border-radius: 12px;
+}
+
+/* Message si aucun contenu n'a encore été ajouté */
+.pm-empty {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ===== Lightbox photo ===== */
+.photo-lightbox-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+    z-index: 2100;
+}
+.photo-lightbox-overlay.open { opacity: 1; visibility: visible; }
+.photo-lightbox-overlay img {
+    max-width: 90%;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+.photo-lightbox-overlay .close-btn {
+    position: absolute;
+    top: 20px; right: 30px;
+    color: white;
+    font-size: 2.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .project-modal-content { padding: 1.5rem; max-height: 90vh; }
+    .pm-photo { height: 120px; }
+}

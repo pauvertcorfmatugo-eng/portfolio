@@ -1,0 +1,186 @@
+.code {
+  margin: 0;
+  border: 1px solid #25272c;
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  color: var(--code-text);
+  overflow: hidden;
+}
+
+.code-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.75rem 0.7rem 1rem;
+  border-bottom: 1px solid #25272c;
+}
+
+.code-lang {
+  flex-shrink: 0;
+  padding: 0.2rem 0.45rem;
+  border-radius: 5px;
+  background: #22242a;
+  color: var(--accent-bright);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.code-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.86rem;
+  color: #c9c8c1;
+}
+
+.code-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #2d3036;
+  border-radius: 7px;
+  background: none;
+  color: #a9a9a2;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.code-copy:hover {
+  color: #fff;
+  border-color: #4a4d55;
+}
+
+.code-copy svg {
+  width: 13px;
+  height: 13px;
+}
+
+.code-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.code-body.is-collapsed {
+  max-height: 22rem;
+  overflow: hidden;
+}
+
+.code-body.is-collapsed::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 6rem;
+  background: linear-gradient(transparent, var(--code-bg));
+  pointer-events: none;
+}
+
+.code-gutter {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.9rem 1rem 1rem;
+  border-right: 1px solid #1f2125;
+  color: #45474d;
+  text-align: right;
+  user-select: none;
+}
+
+.code-body pre {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+}
+
+.code-body pre:focus-visible {
+  outline-offset: -2px;
+}
+
+.code-body code {
+  font-family: inherit;
+  white-space: pre;
+}
+
+.code-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.7rem;
+  border: 0;
+  border-top: 1px solid #25272c;
+  background: #15161a;
+  color: #b9b8b1;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.code-toggle:hover {
+  color: #fff;
+  background: #1a1c20;
+}
+
+.code-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ── Coloration syntaxique (highlight.js) ────────────────── */
+
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+  color: #6c6e75;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-doctag {
+  color: #82a6ff;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-subst {
+  color: #f1c47a;
+}
+
+.hljs-number,
+.hljs-literal {
+  color: #ff9f6e;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr,
+.hljs-attribute,
+.hljs-property {
+  color: #8ccfff;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-section {
+  color: #bba9ff;
+}
+
+.hljs-type,
+.hljs-built_in,
+.hljs-title.class_ {
+  color: #ff9cb0;
+}
+
+.hljs-symbol,
+.hljs-operator,
+.hljs-punctuation {
+  color: #a6a69f;
+}

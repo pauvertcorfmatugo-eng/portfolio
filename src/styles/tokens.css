@@ -1,0 +1,78 @@
+/* ─────────────────────────────────────────────────────────────
+   COULEURS & TYPO
+   Pour changer la couleur d'accent de tout le site : --accent.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: light;
+
+  --bg: #f5f4ef;
+  --bg-elev: #ffffff;
+  --bg-sunken: #ecebe4;
+  --line: #e0ded5;
+  --line-strong: #cbc8bd;
+
+  --text: #141518;
+  --text-2: #46474c;
+  --text-3: #75756e;
+
+  --accent: #2b5cff; /* bleu électrique */
+  --accent-hover: #1f4be0;
+  --accent-ink: #ffffff; /* texte posé sur l'accent */
+  --accent-text: #1f4be0; /* accent utilisé comme couleur de texte */
+  --accent-soft: rgba(43, 92, 255, 0.14);
+  --accent-bright: #8aa8ff; /* accent lisible sur les fonds sombres (blocs de code…) */
+
+  --danger: #c43b2e;
+  --danger-soft: rgba(196, 59, 46, 0.1);
+  --ok: #2c8a4b;
+
+  --code-bg: #111214;
+  --code-line: #26282d;
+  --code-text: #e6e5df;
+
+  --grid-dot: rgba(20, 21, 24, 0.09);
+  --shadow: 0 1px 2px rgba(20, 21, 24, 0.04), 0 10px 30px -14px rgba(20, 21, 24, 0.16);
+  --shadow-lg: 0 2px 6px rgba(20, 21, 24, 0.05), 0 24px 60px -20px rgba(20, 21, 24, 0.3);
+
+  --radius-s: 8px;
+  --radius: 14px;
+  --radius-l: 22px;
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --nav-h: 64px;
+  --maxw: 1160px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0c0d0f;
+  --bg-elev: #141619;
+  --bg-sunken: #08090a;
+  --line: #222529;
+  --line-strong: #30343a;
+
+  --text: #edece6;
+  --text-2: #adaca5;
+  --text-3: #76766f;
+
+  --accent: #3366ff;
+  --accent-hover: #4d7aff;
+  --accent-text: #86a3ff;
+  --accent-soft: rgba(77, 122, 255, 0.18);
+
+  --danger: #ff6b5b;
+  --danger-soft: rgba(255, 107, 91, 0.12);
+  --ok: #5fd68a;
+
+  --code-bg: #0f1012;
+  --code-line: #202226;
+
+  --grid-dot: rgba(237, 236, 230, 0.07);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.35), 0 30px 70px -24px rgba(0, 0, 0, 0.85);
+}

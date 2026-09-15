@@ -1,0 +1,134 @@
+.section-alt {
+  border-block: 1px solid var(--line);
+  background: var(--bg-sunken);
+}
+
+:root[data-theme='dark'] .section-alt {
+  background: #0a0b0d;
+}
+
+.tl {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 11rem 44px minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 2.4rem;
+}
+
+.tl-item:last-child {
+  padding-bottom: 0;
+}
+
+/* Trait vertical reliant les étapes */
+.tl-item::before {
+  content: '';
+  position: absolute;
+  top: 44px;
+  bottom: 0;
+  left: calc(11rem + 1.5rem + 21.5px);
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.tl-item:last-child::before {
+  display: none;
+}
+
+.tl-date {
+  padding-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  text-align: right;
+}
+
+.tl-marker {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg-elev);
+  color: var(--text-2);
+}
+
+.tl-marker svg {
+  width: 19px;
+  height: 19px;
+}
+
+.tl-item:first-child .tl-marker {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.tl-body {
+  padding: 1.2rem 1.4rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+}
+
+.tl-type {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+}
+
+.tl-type.is-formation {
+  color: var(--accent-text);
+}
+
+.tl-body h3 {
+  margin-top: 0.3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tl-place {
+  margin-top: 0.15rem;
+  font-size: 0.92rem;
+  color: var(--text-2);
+}
+
+.tl-desc {
+  margin-top: 0.7rem;
+  color: var(--text-2);
+}
+
+@media (max-width: 700px) {
+  .tl-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+  }
+
+  .tl-item::before {
+    left: 21.5px;
+  }
+
+  .tl-date {
+    grid-column: 2;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .tl-marker {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+  }
+
+  .tl-body {
+    grid-column: 2;
+  }
+}

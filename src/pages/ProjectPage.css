@@ -1,0 +1,300 @@
+.case-hero {
+  padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.case-back {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 2.2rem;
+  font-size: 0.9rem;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.2s, gap 0.3s var(--ease);
+}
+
+.case-back:hover {
+  gap: 0.7rem;
+  color: var(--text);
+}
+
+.case-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.case-title {
+  margin-top: 0.8rem;
+  max-width: 20ch;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.case-lead {
+  margin-top: 1.4rem;
+  max-width: 62ch;
+  font-size: 1.12rem;
+  color: var(--text-2);
+}
+
+.case-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2.8rem;
+  margin-top: 2.2rem;
+  padding-top: 1.6rem;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.case-meta-item {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+}
+
+.case-meta-item > .mono {
+  font-size: 0.74rem;
+  color: var(--text-3);
+}
+
+.case-meta-item strong {
+  font-weight: 500;
+}
+
+.case-github {
+  margin-top: 2rem;
+}
+
+/* ── Contenu + sommaire ──────────────────────────────────── */
+
+.case-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.case-toc {
+  position: sticky;
+  top: calc(var(--nav-h) + 1.5rem);
+  align-self: start;
+  max-height: calc(100vh - var(--nav-h) - 3rem);
+  overflow-y: auto;
+}
+
+.case-toc-title {
+  margin-bottom: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+
+.case-toc ol {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--line);
+}
+
+.case-toc a {
+  display: flex;
+  gap: 0.6rem;
+  margin-left: -1px;
+  padding: 0.45rem 0.4rem 0.45rem 0.9rem;
+  border-left: 2px solid transparent;
+  font-size: 0.87rem;
+  line-height: 1.4;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.case-toc a .mono {
+  flex-shrink: 0;
+  padding-top: 0.08rem;
+  font-size: 0.72rem;
+  color: var(--text-3);
+}
+
+.case-toc a:hover {
+  color: var(--text);
+}
+
+.case-toc a.is-active {
+  border-left-color: var(--accent);
+  color: var(--text);
+}
+
+.case-content {
+  display: grid;
+  gap: clamp(2.6rem, 5vw, 3.6rem);
+  max-width: 760px;
+}
+
+.case-section h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+  font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.case-section h2 .mono {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-text);
+}
+
+.case-section h2 .mono svg {
+  width: 20px;
+  height: 20px;
+  transform: translateY(3px);
+}
+
+.case-section p,
+.case-list {
+  font-size: 1.04rem;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+
+.case-section p + p,
+.case-section p + .case-list,
+.case-list + p {
+  margin-top: 1rem;
+}
+
+.case-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+}
+
+.case-list li {
+  position: relative;
+  padding-left: 1.3rem;
+}
+
+.case-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.case-code-intro {
+  margin-top: -0.4rem;
+}
+
+.case-code-list {
+  display: grid;
+  gap: 1.3rem;
+  margin-top: 1.5rem;
+}
+
+.case-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.8rem;
+}
+
+.case-photos button {
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: none;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.case-photos img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.case-photos button:hover img {
+  transform: scale(1.03);
+}
+
+.case-empty {
+  display: grid;
+  justify-items: start;
+  gap: 1.2rem;
+  padding-top: 3rem;
+  color: var(--text-2);
+}
+
+/* ── Appel à l'action ────────────────────────────────────── */
+
+.case-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin: clamp(4rem, 8vw, 6rem) 0 clamp(3rem, 6vw, 5rem);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  border-radius: var(--radius-l);
+  background: var(--text);
+  color: var(--bg);
+}
+
+.case-cta-title {
+  font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.case-cta-text {
+  margin-top: 0.3rem;
+  opacity: 0.7;
+}
+
+.case-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.case-cta .btn-outline {
+  border-color: color-mix(in srgb, var(--bg) 35%, transparent);
+  color: var(--bg);
+}
+
+.case-cta .btn-outline:hover {
+  border-color: var(--bg);
+}
+
+@media (max-width: 960px) {
+  .case-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .case-toc {
+    position: static;
+    max-height: none;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+}

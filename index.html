@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ugo Pauvert--Corfmat — Développeur Web & App</title>
+    <meta
+      name="description"
+      content="Portfolio d'Ugo Pauvert--Corfmat, développeur web & applicatif (BTS SIO SLAM) en recherche de stage : compétences backend, bases de données, projets et parcours."
+    />
+    <meta property="og:title" content="Ugo Pauvert--Corfmat — Développeur Web & App" />
+    <meta property="og:description" content="Compétences, projets et parcours. En recherche de stage en informatique." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Applique le thème avant l'affichage pour éviter un flash de couleur.
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem('theme'); } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Ce site nécessite JavaScript. Contact : pauvertcorfmat.ugo@gmail.com</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

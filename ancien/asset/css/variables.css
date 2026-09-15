@@ -1,0 +1,30 @@
+:root {
+    /* --- MODE CLAIR (PAR DÉFAUT) --- */
+    --bg-color: #f0f2f5;           /* Blanc/Gris clair */
+    --primary: #2563eb;            /* Bleu Roi */
+    --secondary: #1e40af;          /* Bleu Foncé */
+    --accent: #06b6d4;             /* Cyan (au lieu du rose) */
+    
+    --text: #1a1a1a;               /* Noir */
+    --text-muted: #555555;
+    
+    --glass-bg: rgba(255, 255, 255, 0.7); 
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    --font-main: 'Outfit', sans-serif;
+}
+
+/* --- MODE SOMBRE --- */
+body.dark-mode {
+    --bg-color: #050510;           /* Noir */
+    --primary: #4361ee;            /* Bleu Électrique */
+    --secondary: #3f37c9;          /* Bleu Nuit */
+    --accent: #4cc9f0;             /* Cyan Néon */
+    
+    --text: #ffffff;
+    --text-muted: #cccccc;
+    
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --card-shadow: rgba(0, 0, 0, 0.5);
+}

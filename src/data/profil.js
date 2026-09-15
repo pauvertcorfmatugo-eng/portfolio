@@ -13,8 +13,6 @@ export const profil = {
   accroche:
     "Futur développeur (BTS SIO SLAM), je conçois des applications web et logicielles complètes. Toujours avide de découvrir de nouveaux langages, j'ai un fort attrait pour l'optimisation des bases de données et la création d'architectures backend performantes.",
   email: 'pauvertcorfmat.ugo@gmail.com',
-  // Le téléphone n'est pas affiché sur le site (évite le démarchage), comme sur l'ancienne version.
-  telephone: '06 13 32 73 32',
   localisation: 'Nantes / Pornic',
   // Mets ton CV dans public/cv/ avec exactement ce nom de fichier.
   cv: 'cv/CV_Ugo_Pauvert_Corfmat.pdf',

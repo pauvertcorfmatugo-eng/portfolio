@@ -4,7 +4,6 @@ $profil = [
     'titre' => 'Développeur Web & App',
     'accroche' => 'Futur développeur (BTS SIO SLAM), je conçois des applications web et logicielles complètes. Toujours avide de découvrir de nouveaux langages, j\'ai un fort attrait pour l\'optimisation des bases de données et la création d\'architectures backend performantes.',
     'email' => 'pauvertcorfmat.ugo@gmail.com',
-    'telephone' => '06 13 32 73 32',
     'localisation' => 'Nantes / Pornic'
 ];
 

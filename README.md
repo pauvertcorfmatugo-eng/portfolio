@@ -108,46 +108,15 @@ Le `COMPTE` est le même des deux côtés du `@`.
 > propose un terminal dans le navigateur à l'adresse `https://ssh-COMPTE.alwaysdata.net`.
 > Leur propre documentation le décrit comme lent et peu fiable, mais il dépanne.
 
-Une fois connecté, le dépôt est **privé**, donc il faut s'authentifier. Le plus
-simple est de mettre le jeton directement dans l'adresse : git ne demande alors
-plus rien.
+Une fois connecté :
 
 ```bash
 cd ~
-git clone https://JETON@github.com/pauvertcorfmatugo-eng/portfolio.git
+git clone https://github.com/pauvertcorfmatugo-eng/portfolio.git
 cd portfolio
 ```
 
-Remplace `JETON` par le jeton d'accès personnel créé sur GitHub (il commence par
-`ghp_` ou `github_pat_`). Il doit donner le droit de **lecture sur ce dépôt** : un
-jeton *fine-grained* limité à `portfolio` avec « Contents : Read-only » suffit, un
-jeton *classic* avec la case `repo` aussi.
-
-> **Si tu préfères la méthode interactive** (`git clone https://github.com/...`),
-> git pose deux questions :
-> - `Username for 'https://github.com'` → **`pauvertcorfmatugo-eng`**, ton identifiant
->   GitHub. Ni ton email, ni ton nom d'utilisateur AlwaysData.
-> - `Password for ...` → **le jeton**, pas ton mot de passe GitHub. Rien ne s'affiche
->   pendant que tu le colles, c'est normal : tape puis valide.
->
-> À savoir : d'après la documentation GitHub, l'identifiant demandé n'est pas utilisé
-> pour t'authentifier — **seul le jeton compte**. Git exige qu'un identifiant soit saisi,
-> mais si tu te trompes dessus et que le jeton est bon, la connexion passe quand même.
-> Autrement dit, le seul vrai risque d'échec ici, c'est le jeton ou ses droits.
-
-> **Le jeton reste enregistré** dans `~/portfolio/.git/config` sur le serveur, en clair.
-> Sur ton propre hébergement avec un jeton en lecture seule limité à ce dépôt, c'est
-> acceptable — et c'est ce qui permet aux `git pull` suivants de ne rien redemander.
-> Pour l'effacer une fois le site en ligne :
->
-> ```bash
-> git -C ~/portfolio remote set-url origin https://github.com/pauvertcorfmatugo-eng/portfolio.git
-> ```
->
-> Les mises à jour redemanderont alors identifiant et jeton à chaque fois.
-
-> Alternative sans jeton du tout : passer le dépôt en public dans les réglages GitHub,
-> et le `git clone` ne demandera plus rien.
+Le dépôt est public : rien n'est demandé, ni identifiant ni mot de passe.
 
 ### Étape 4 — Compiler le site
 
@@ -223,7 +192,6 @@ dans `deploy/`.
 |---|---|
 | `Permission denied` à la connexion SSH | Trois causes possibles, dans cet ordre : la connexion par mot de passe n'est pas activée sur l'utilisateur (étape 2) ; le mot de passe Unix n'a jamais été défini (il est distinct de celui de l'interface d'administration) ; le nom d'utilisateur n'est pas le nom du compte. |
 | `Could not resolve hostname` | L'adresse est `ssh-COMPTE.alwaysdata.net`, avec le préfixe `ssh-`. Le nom de compte est identique des deux côtés du `@`. |
-| `Authentication failed` au `git clone` | Le mot de passe demandé par git est le **jeton** GitHub, pas le mot de passe du compte GitHub. L'identifiant est `pauvertcorfmatugo-eng`. |
 | La page d'accueil marche, mais `/projets/...` renvoie une erreur 404 | Vérifie que `~/www/.htaccess` existe (`ls -a ~/www`). C'est un fichier caché, beaucoup de clients FTP ne le copient pas. |
 | `/espace` affiche « API injoignable » | Vérifie que `~/www/api/` est bien là et que le type du site est **PHP**, pas « Fichiers statiques ». |
 | Erreur du serveur à l'envoi d'un message | La base SQLite manque peut-être : `php -m \| grep -i sqlite` doit afficher `pdo_sqlite`. Vérifie aussi que `~/www/data/` est accessible en écriture. |

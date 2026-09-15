@@ -50,64 +50,147 @@ Ensuite : lien « Espace privé » en bas de page, ou directement `http://localh
 
 ## 4. Mettre le site en ligne sur AlwaysData
 
-### a. Préparer le dossier à envoyer
+**Tu n'as pas besoin de ton ordinateur.** AlwaysData fournit Node.js et PHP en SSH :
+tout se fait sur le serveur, depuis n'importe quel navigateur ou terminal.
+
+Dans tout ce qui suit, remplace `COMPTE` par le nom de ton compte AlwaysData.
+
+| Étape | Où ça se passe |
+|---|---|
+| 1. Créer le site | Interface web d'AlwaysData (`admin.alwaysdata.com`) |
+| 2. Activer SSH | Interface web d'AlwaysData |
+| 3 à 6. Le reste | En SSH, sur le serveur |
+
+---
+
+### Étape 1 — Créer le site
+
+Dans `admin.alwaysdata.com` → **Web → Sites → Ajouter un site** :
+
+- **Adresses** : `COMPTE.alwaysdata.net` (ou ton nom de domaine)
+- **Type** : **PHP**, version **8.1 ou plus**
+- **Répertoire racine** : `/www`
+
+Fais-le maintenant, même si le dossier est encore vide : dès que l'adresse est
+enregistrée, AlwaysData commence à générer tout seul le certificat HTTPS
+(Let's Encrypt). Il n'y a rien à acheter ni à installer.
+
+### Étape 2 — Activer l'accès SSH
+
+L'accès SSH est **désactivé par défaut**. Dans **Environnement → Utilisateurs**,
+modifie ton utilisateur et coche l'autorisation de connexion par mot de passe.
+
+### Étape 3 — Se connecter et récupérer le code
 
 ```bash
+ssh COMPTE@ssh-COMPTE.alwaysdata.net
+```
+
+Puis, une fois connecté :
+
+```bash
+cd ~
+git clone https://github.com/pauvertcorfmatugo-eng/portfolio.git
+cd portfolio
+```
+
+> Le dépôt est **privé** : git va demander ton identifiant GitHub puis un mot de passe.
+> Ce mot de passe doit être un **jeton d'accès personnel** (GitHub → Settings →
+> Developer settings → Personal access tokens), pas ton vrai mot de passe.
+> Plus simple si ça te convient : passer le dépôt en public dans les réglages GitHub,
+> et le `git clone` marchera sans rien demander.
+
+### Étape 4 — Compiler le site
+
+```bash
+export NODEJS_VERSION=22
+npm install
 npm run build:deploy
 ```
 
-Un dossier **`deploy/`** apparaît : c'est *exactement* ce qu'il faut mettre en ligne
-(le site compilé + `api/` + `data/`).
+`npm install` prend une minute ou deux. À la fin, tu dois lire
+« ✔ Dossier « deploy/ » prêt. ».
 
-### b. Créer le site chez AlwaysData
+### Étape 5 — Installer le site dans `www/`
 
-Dans l'administration AlwaysData :
+```bash
+cp -r ~/portfolio/deploy/. ~/www/
+ls ~/www
+```
 
-1. **Web → Sites → Ajouter un site**
-   - Type : **PHP** (version **8.1 ou plus**)
-   - Racine : `/www` (ou le dossier que tu préfères, par ex. `/www/portfolio`)
-   - Adresse : ton sous-domaine `xxx.alwaysdata.net`, ou ton nom de domaine.
-2. **Envoie le contenu de `deploy/`** dans ce dossier (FTP, SFTP ou SSH).
-   Attention : le *contenu* du dossier, pas le dossier `deploy` lui-même.
-   L'arborescence sur le serveur doit ressembler à :
+Tu dois voir : `index.html`, `assets`, `api`, `data`, `.htaccess`.
 
-   ```
-   www/
-   ├── index.html      ← le site
-   ├── assets/
-   ├── .htaccess       ← routage des pages (/projets/…, /espace)
-   ├── api/            ← l'API PHP
-   └── data/           ← base SQLite + sessions (créées toutes seules)
-   ```
+### Étape 6 — Créer ton mot de passe
 
-3. **Crée ton mot de passe**, en SSH (`ssh xxx@ssh-xxx.alwaysdata.net`) :
+```bash
+cd ~/www
+php api/tools/setup.php
+```
 
-   ```bash
-   cd ~/www
-   php api/tools/setup.php
-   ```
+Le script demande un identifiant et un mot de passe (12 caractères minimum) et
+crée `api/config.local.php`. C'est ce mot de passe qui protège `/espace`.
 
-4. **Active le HTTPS** (gratuit, dans *Web → Sites → SSL*). C'est indispensable :
-   sans lui, ton mot de passe circulerait en clair.
+### Vérifier que tout marche
 
-### c. Vérifier
+Ouvre dans le navigateur :
 
-- `https://ton-site/` → le portfolio.
-- `https://ton-site/projets/ministages44` → l'étude de cas (si cette page s'affiche,
-  le `.htaccess` fonctionne).
-- `https://ton-site/espace` → la connexion à l'espace privé.
-- Envoie-toi un message depuis le formulaire de contact : il doit apparaître dans l'espace privé.
+| Adresse | Ce que tu dois voir |
+|---|---|
+| `https://COMPTE.alwaysdata.net/` | Le portfolio |
+| `https://COMPTE.alwaysdata.net/projets/ministages44` | L'étude de cas — si cette page s'affiche, le `.htaccess` fonctionne |
+| `https://COMPTE.alwaysdata.net/espace` | L'écran de connexion |
 
-### d. Pour mettre à jour le site plus tard
+Puis envoie-toi un message depuis le formulaire de contact : il doit apparaître
+dans `/espace` après connexion.
 
-Relance `npm run build:deploy` et renvoie le contenu de `deploy/`.
-Ne touche pas à `data/` (tes messages sont dedans) ni à `api/config.local.php` (ton mot de passe).
+### Ton CV
 
-> **Si le CV ne se télécharge pas** : place ton PDF dans `public/cv/CV_Ugo_Pauvert_Corfmat.pdf`
-> avant de compiler (voir `public/cv/LISEZ-MOI.txt`).
+Le PDF n'est pas dans le dépôt. Envoie-le directement à cet emplacement (par SFTP,
+ou depuis l'interface **Fichiers** d'AlwaysData) :
 
-> **Option plus sûre pour les données** : mets la base hors du dossier web. Ajoute dans
-> `api/config.local.php` : `'data_dir' => '/home/TON-COMPTE/prive/portfolio-data',`
+```
+~/www/cv/CV_Ugo_Pauvert_Corfmat.pdf
+```
+
+Pas besoin de recompiler : le bouton « Télécharger le CV » pointe déjà là.
+
+### Mettre à jour le site plus tard
+
+```bash
+cd ~/portfolio
+git pull
+export NODEJS_VERSION=22
+npm run build:deploy
+cp -r ~/portfolio/deploy/. ~/www/
+```
+
+`cp` écrase les fichiers du site mais **ne touche ni à `data/`** (tes messages sont
+dedans) **ni à `api/config.local.php`** (ton mot de passe) : ces deux-là ne sont pas
+dans `deploy/`.
+
+### Si ça coince
+
+| Symptôme | À faire |
+|---|---|
+| La page d'accueil marche, mais `/projets/...` renvoie une erreur 404 | Vérifie que `~/www/.htaccess` existe (`ls -a ~/www`). C'est un fichier caché, beaucoup de clients FTP ne le copient pas. |
+| `/espace` affiche « API injoignable » | Vérifie que `~/www/api/` est bien là et que le type du site est **PHP**, pas « Fichiers statiques ». |
+| Erreur du serveur à l'envoi d'un message | La base SQLite manque peut-être : `php -m \| grep -i sqlite` doit afficher `pdo_sqlite`. Vérifie aussi que `~/www/data/` est accessible en écriture. |
+| `npm: command not found` | Refais `export NODEJS_VERSION=22` : la variable est perdue à chaque nouvelle connexion SSH. |
+
+### Optionnel, plus sûr : les données hors du dossier web
+
+Par défaut la base est dans `~/www/data/`, protégée par un `.htaccess`. Pour la
+mettre carrément hors de portée du web :
+
+```bash
+mkdir -p ~/prive/portfolio-data
+```
+
+puis ajoute cette ligne dans `~/www/api/config.local.php`, avant le `);` final :
+
+```php
+  'data_dir' => '/home/COMPTE/prive/portfolio-data',
+```
 
 ## 5. Autres façons de compiler
 
